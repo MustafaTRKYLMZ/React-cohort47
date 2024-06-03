@@ -1,4 +1,4 @@
 [build]
   base = "week1/project/ecommerce/src"
   publish = "build"
-  command = "tsc && vite build"
+  command = "vite build"
