@@ -1,0 +1,4 @@
+[build]
+  base = "week1/project/ecommerce/src"
+  publish = "build"
+  command = "vite build"
