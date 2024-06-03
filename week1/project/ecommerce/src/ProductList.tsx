@@ -5,6 +5,7 @@ import { ProductItem } from "./ProductItem";
 export type ProductListProps = {
   productList: Product[];
 };
+
 export const ProductList: FC<ProductListProps> = ({ productList }) => {
   return (
     <ul className="products">
