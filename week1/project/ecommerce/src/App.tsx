@@ -6,7 +6,7 @@ import allCategories from "./fake-data/all-categories";
 import allProducts from "./fake-data/all-products";
 import { Product } from "./types/product";
 
-function App() {
+const App = () => {
   const categories = allCategories;
   const [products, setProducts] = useState<Product[]>(allProducts);
   const [selectedCategory, setSelectedCategory] = useState(() => {
@@ -40,6 +40,6 @@ function App() {
       <ProductList productList={products} />
     </div>
   );
-}
+};
 
 export default App;
