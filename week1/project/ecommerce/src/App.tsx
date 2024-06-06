@@ -1,20 +1,21 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { CategoryList } from "./CategoryList";
-import { ProductList } from "./ProductList";
+import { CategoryList, ProductList } from "./components";
 import allCategories from "./fake-data/all-categories";
 import allProducts from "./fake-data/all-products";
-import { Product } from "./types/product";
+import { Product } from "./types";
 
 const App = () => {
   const categories = allCategories;
   const [products, setProducts] = useState<Product[]>(allProducts);
-  const [selectedCategory, setSelectedCategory] = useState(() => {
-    return categories[0];
-  });
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     const getProducts = async () => {
+      if (selectedCategory === "all") {
+        setProducts(allProducts);
+        return;
+      }
       const filteredProducts = allProducts.filter(
         (product) => product.category === selectedCategory
       );
@@ -23,7 +24,17 @@ const App = () => {
     getProducts();
   }, [selectedCategory]);
 
-  const handleCategoryChange = (category: string) => {
+  const [activeButtonId, setActiveButtonId] = useState<number | undefined>(
+    undefined
+  );
+
+  const handleCategoryChange = (category: string, id?: number) => {
+    if (category === selectedCategory) {
+      setActiveButtonId(undefined);
+      setSelectedCategory("all");
+      return;
+    }
+    setActiveButtonId(id);
     setSelectedCategory(category);
   };
 
@@ -35,6 +46,7 @@ const App = () => {
       <CategoryList
         allCategories={categories}
         changeCategory={handleCategoryChange}
+        activeButtonId={activeButtonId}
       />
       {/*product list*/}
       <ProductList productList={products} />

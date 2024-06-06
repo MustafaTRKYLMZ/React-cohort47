@@ -1,9 +1,5 @@
 import { FC } from "react";
-import { Product } from "./types/product";
-
-export type ProductItemProps = {
-  product: Product;
-};
+import { ProductItemProps } from "../types";
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
   return (
