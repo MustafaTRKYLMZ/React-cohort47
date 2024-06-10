@@ -3,10 +3,12 @@ import { ProductItemProps } from "../types";
 
 export const ProductItem: FC<ProductItemProps> = ({ product }) => {
   return (
-    <li className="productItem">
+    <li>
       <div className="product">
         <img className="productImage" src={product.image} alt={product.title} />
-        <span className="productTitle">{product.title}</span>
+        <div className="productTitle">
+          <span>{product.title}</span>
+        </div>
       </div>
     </li>
   );
