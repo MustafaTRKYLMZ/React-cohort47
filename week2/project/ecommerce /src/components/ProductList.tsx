@@ -6,7 +6,7 @@ export const ProductList: FC<ProductListProps> = ({ productList }) => {
   return (
     <ul className="products">
       {productList?.map((product) => {
-        return <ProductItem product={product} />;
+        return <ProductItem key={product?.id} product={product} />;
       })}
     </ul>
   );

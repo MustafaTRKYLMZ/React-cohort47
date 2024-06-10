@@ -1,27 +1,46 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { CategoryList, ProductList } from "./components";
-import allCategories from "./fake-data/all-categories";
-import allProducts from "./fake-data/all-products";
 import { Product } from "./types";
+import { getAllCategories, getAllProducts } from "./controllers";
+import { Route, Routes, Navigate } from "react-router-dom";
+import Products from "./components/Products";
+import { ProductDetailPage } from "./components/ProductDetailPage";
 
 const App = () => {
-  const categories = allCategories;
-  const [products, setProducts] = useState<Product[]>(allProducts);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [categories, setCategories] = useState<string[]>([]); // ["all", "electronics",
+  const [products, setProducts] = useState<Product[]>([]);
+  const [errormessage, setErrorMessage] = useState<string>("");
 
-  useEffect(() => {
-    const getProducts = async () => {
+  const getProducts = async () => {
+    try {
+      const allProducts = await getAllProducts();
       if (selectedCategory === "all") {
         setProducts(allProducts);
         return;
       }
       const filteredProducts = allProducts.filter(
-        (product) => product.category === selectedCategory
+        (product: Product) =>
+          product.category && product.category === selectedCategory
       );
       setProducts(filteredProducts);
-    };
+    } catch (error) {
+      setErrorMessage("Error while fetching products");
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      setCategories(categories);
+    } catch (error) {
+      setErrorMessage("Error while fetching categories");
+    }
+  };
+
+  useEffect(() => {
     getProducts();
+    getCategories();
   }, [selectedCategory]);
 
   const [activeButtonId, setActiveButtonId] = useState<number | undefined>(
@@ -39,18 +58,22 @@ const App = () => {
   };
 
   return (
-    <div className="main">
-      {/*header*/}
-      <h1 className="productHeader">Products</h1>
-      {/*category list*/}
-      <CategoryList
-        allCategories={categories}
-        changeCategory={handleCategoryChange}
-        activeButtonId={activeButtonId}
+    <Routes>
+      <Route path="/" element={<Navigate to="/products" />} />
+      <Route
+        path="products"
+        element={
+          <Products
+            errormessage={errormessage}
+            categories={categories}
+            products={products}
+            activeButtonId={activeButtonId}
+            handleCategoryChange={handleCategoryChange}
+          />
+        }
       />
-      {/*product list*/}
-      <ProductList productList={products} />
-    </div>
+      <Route path="products/:id" element={<ProductDetailPage />} />
+    </Routes>
   );
 };
 
