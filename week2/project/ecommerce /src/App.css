@@ -1,0 +1,137 @@
+/* Base styles */
+
+/* Header */
+.header {
+  background-color: #007bff;
+  color: white;
+  padding: 1em 0;
+  text-align: center;
+}
+
+/* Main content */
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5em;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Categories */
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 2em;
+  gap: 0.5rem;
+}
+
+.categoryItem {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5em;
+  height: auto;
+  box-sizing: border-box;
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.categoryItem:hover {
+  transform: scale(1.05);
+}
+
+/* Products */
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-auto-rows: auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+li {
+  list-style-type: none;
+}
+
+/* Product */
+.product {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.productTitle {
+  padding: 15px;
+  height: 100%;
+  text-overflow: ellipsis;
+}
+li:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.productImage {
+  margin-bottom: auto;
+  margin-top: auto;
+  width: 100%;
+  object-fit: contain;
+}
+
+.productDetails {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+.productDetailsTitle {
+  margin-right: auto;
+}
+.productDetailsTitle h1 {
+  margin: 0;
+  font-size: 2em;
+}
+.productDetailsInformation {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+.productImageContainer {
+  position: relative;
+}
+.productDetaislImage {
+  min-width: 50%;
+}
+.productDetailsInformation img {
+  max-height: 80vh;
+}
+/* 4 columns for large screens */
+@media (min-width: 1200px) {
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 3 columns for medium screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .products {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .productDetailsInformation {
+    flex-direction: row-reverse;
+  }
+}
+
+/* 2 columns for small screens */
+@media (min-width: 480px) and (max-width: 767px) {
+  .products {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 column for extra small screens */
+@media (max-width: 479px) {
+  .products {
+    grid-template-columns: 1fr;
+  }
+}
