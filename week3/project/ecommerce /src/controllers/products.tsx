@@ -9,7 +9,10 @@ export const getAllProducts = async () => {
 
 export const getProductById = async (productId: string) => {
   if (!productId) throw new Error("Product id is required");
-  const id = parseInt(productId);
+
+  // Convert to number if productId is a string
+  const id = typeof productId === "string" ? parseInt(productId) : productId;
+
   try {
     const response = await fetch(`https://fakestoreapi.com/products/${id}`);
     return response.json();

@@ -1,33 +1,17 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { Product } from "./types";
-import { getAllCategories, getAllProducts } from "./controllers";
-import { Route, Routes, Navigate } from "react-router-dom";
-import Products from "./components/Products";
-import { ProductDetailPage } from "./components/ProductDetailPage";
+import { getAllCategories } from "./controllers";
+import { Route, Routes } from "react-router-dom";
+import { Navbar, Favorites, ProductDetailPage, Products } from "./components";
+import { useAllProductsWithFavorites } from "./hooks/useAllProductsWithFavorites"; // Hook'u import edin
 
 const App = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [categories, setCategories] = useState<string[]>([]); // ["all", "electronics",
-  const [products, setProducts] = useState<Product[]>([]);
-  const [errormessage, setErrorMessage] = useState<string>("");
+  const [categories, setCategories] = useState<string[]>([]);
 
-  const getProducts = async () => {
-    try {
-      const allProducts = await getAllProducts();
-      if (selectedCategory === "all") {
-        setProducts(allProducts);
-        return;
-      }
-      const filteredProducts = allProducts.filter(
-        (product: Product) =>
-          product.category && product.category === selectedCategory
-      );
-      setProducts(filteredProducts);
-    } catch (error) {
-      setErrorMessage("Error while fetching products");
-    }
-  };
+  const { products, isLoading, errorMessage, setErrorMessage } =
+    useAllProductsWithFavorites();
 
   const getCategories = async () => {
     try {
@@ -39,9 +23,8 @@ const App = () => {
   };
 
   useEffect(() => {
-    getProducts();
     getCategories();
-  }, [selectedCategory]);
+  }, []);
 
   const [activeButtonId, setActiveButtonId] = useState<number | undefined>(
     undefined
@@ -57,23 +40,35 @@ const App = () => {
     setSelectedCategory(category);
   };
 
+  const filteredProducts =
+    selectedCategory === "all"
+      ? products
+      : products.filter(
+          (product: Product) =>
+            product.category && product.category === selectedCategory
+        );
+
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/products" />} />
-      <Route
-        path="products"
-        element={
-          <Products
-            errormessage={errormessage}
-            categories={categories}
-            products={products}
-            activeButtonId={activeButtonId}
-            handleCategoryChange={handleCategoryChange}
-          />
-        }
-      />
-      <Route path="products/:id" element={<ProductDetailPage />} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Products
+              errormessage={errorMessage}
+              categories={categories}
+              products={filteredProducts}
+              activeButtonId={activeButtonId}
+              handleCategoryChange={handleCategoryChange}
+              isLoading={isLoading}
+            />
+          }
+        />
+        <Route path="products/:id" element={<ProductDetailPage />} />
+        <Route path="favorites" element={<Favorites />} />
+      </Routes>
+    </>
   );
 };
 

@@ -8,18 +8,21 @@ interface ProductsProps {
   categories: string[];
   products: Product[];
   activeButtonId: number | undefined;
+  isLoading: boolean;
   handleCategoryChange: (category: string, id?: number) => void;
 }
 
-const Products: React.FC<ProductsProps> = ({
+export const Products: React.FC<ProductsProps> = ({
   errormessage,
   categories,
   products,
   activeButtonId,
+  isLoading,
   handleCategoryChange,
 }) => {
   return (
     <div className="main">
+      {isLoading && <h1>Loading...</h1>}
       {errormessage && <h1>{errormessage}</h1>}
       <h1 className="productHeader">Products</h1>
       <CategoryList
@@ -32,5 +35,3 @@ const Products: React.FC<ProductsProps> = ({
     </div>
   );
 };
-
-export default Products;
