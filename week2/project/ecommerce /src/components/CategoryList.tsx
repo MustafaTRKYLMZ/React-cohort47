@@ -3,6 +3,7 @@ import { CategoryListProps } from "../types";
 
 export const CategoryList: FC<CategoryListProps> = ({
   allCategories,
+  errormessage,
   changeCategory,
   activeButtonId,
 }) => {
@@ -18,6 +19,7 @@ export const CategoryList: FC<CategoryListProps> = ({
       >
         all
       </button>
+      {errormessage && <h1>{errormessage}</h1>}
       {allCategories?.map((category: string, index) => {
         const isActive = activeButtonId === index;
         return (

@@ -4,6 +4,7 @@ import { Product } from "../types";
 import { Outlet } from "react-router-dom";
 
 interface ProductsProps {
+  loading: boolean;
   errormessage: string;
   categories: string[];
   products: Product[];
@@ -17,17 +18,20 @@ const Products: React.FC<ProductsProps> = ({
   products,
   activeButtonId,
   handleCategoryChange,
+  loading,
 }) => {
   return (
     <div className="main">
       {errormessage && <h1>{errormessage}</h1>}
       <h1 className="productHeader">Products</h1>
+      {loading && <div>Loading...</div>}
       <CategoryList
+        errormessage={errormessage}
         allCategories={categories}
         changeCategory={handleCategoryChange}
         activeButtonId={activeButtonId}
       />
-      <ProductList productList={products} />
+      <ProductList productList={products} errormessage={errormessage} />
       <Outlet />
     </div>
   );

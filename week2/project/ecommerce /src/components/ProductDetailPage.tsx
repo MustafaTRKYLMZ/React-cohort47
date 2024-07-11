@@ -5,6 +5,7 @@ import { getProductById } from "../controllers/products";
 
 export const ProductDetailPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   const { id } = useParams<{ id: string }>();
 
@@ -19,15 +20,24 @@ export const ProductDetailPage = () => {
 
     const fetchProductDetail = async () => {
       if (!id) return;
-      const productDetail = await getProductById(id);
-      setProductDetail(productDetail);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const productDetail = await getProductById(id);
+        setProductDetail(productDetail);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setError("An error occurred while fetching the product detail");
+      } finally {
+        setLoading(false);
+      }
     };
     fetchProductDetail();
   }, [id]);
 
   return (
     <div className="productDetails">
+      {error && <div>{error}</div>}
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -37,7 +47,6 @@ export const ProductDetailPage = () => {
               <span>{productDetail?.title}</span>
             </h1>
           </div>
-
           <div className="productDetailsInformation">
             <div className="productDetailsImage ">
               <div className="productImageContainer">
