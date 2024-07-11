@@ -2,12 +2,19 @@ import { FC } from "react";
 import { ProductItem } from "./ProductItem";
 import { ProductListProps } from "../types";
 
-export const ProductList: FC<ProductListProps> = ({ productList }) => {
+export const ProductList: FC<ProductListProps> = ({
+  productList,
+  loadingProduct,
+}) => {
   return (
     <ul className="products">
-      {productList?.map((product) => {
-        return <ProductItem key={product?.id} product={product} />;
-      })}
+      {loadingProduct ? (
+        <div>Product Loading...</div>
+      ) : (
+        productList?.map((product) => {
+          return <ProductItem key={product?.id} product={product} />;
+        })
+      )}
     </ul>
   );
 };

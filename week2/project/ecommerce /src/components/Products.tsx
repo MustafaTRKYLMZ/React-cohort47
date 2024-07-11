@@ -9,9 +9,13 @@ interface ProductsProps {
   products: Product[];
   activeButtonId: number | undefined;
   handleCategoryChange: (category: string, id?: number) => void;
+  loadingCategory: boolean;
+  loadingProduct: boolean;
 }
 
 const Products: React.FC<ProductsProps> = ({
+  loadingCategory,
+  loadingProduct,
   errormessage,
   categories,
   products,
@@ -23,11 +27,12 @@ const Products: React.FC<ProductsProps> = ({
       {errormessage && <h1>{errormessage}</h1>}
       <h1 className="productHeader">Products</h1>
       <CategoryList
+        loadingCategory={loadingCategory}
         allCategories={categories}
         changeCategory={handleCategoryChange}
         activeButtonId={activeButtonId}
       />
-      <ProductList productList={products} />
+      <ProductList productList={products} loadingProduct={loadingProduct} />
       <Outlet />
     </div>
   );

@@ -5,6 +5,7 @@ export const CategoryList: FC<CategoryListProps> = ({
   allCategories,
   changeCategory,
   activeButtonId,
+  loadingCategory,
 }) => {
   return (
     <div className="categories">
@@ -18,22 +19,26 @@ export const CategoryList: FC<CategoryListProps> = ({
       >
         all
       </button>
-      {allCategories?.map((category: string, index) => {
-        const isActive = activeButtonId === index;
-        return (
-          <button
-            id={index.toString()}
-            key={index}
-            onClick={() => changeCategory(category, index)}
-            style={{
-              border: isActive ? "2px solid blue" : "1px solid gray",
-              backgroundColor: isActive ? "lightblue" : "white",
-            }}
-          >
-            {category}
-          </button>
-        );
-      })}
+      {loadingCategory ? (
+        <div>Categories Loading...</div>
+      ) : (
+        allCategories?.map((category: string, index) => {
+          const isActive = activeButtonId === index;
+          return (
+            <button
+              id={index.toString()}
+              key={index}
+              onClick={() => changeCategory(category, index)}
+              style={{
+                border: isActive ? "2px solid blue" : "1px solid gray",
+                backgroundColor: isActive ? "lightblue" : "white",
+              }}
+            >
+              {category}
+            </button>
+          );
+        })
+      )}
     </div>
   );
 };
